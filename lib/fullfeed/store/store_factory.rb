@@ -7,7 +7,7 @@ module Fullfeed
       begin
         gem('datamapper', '>= 0.9.7')
         @@stores[:db] = DbStore
-      rescue
+      rescue Gem::LoadError
       end
 
       # get class extends BaseCache from a symbol
