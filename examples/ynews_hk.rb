@@ -1,3 +1,7 @@
+# Extractor Example
+#
+# Fetch Yahoo! News HK
+
 require "#{File.dirname(__FILE__)}/../lib/fullfeed"
 require "#{File.dirname(__FILE__)}/extractors/yahoo_news_hong_kong_extractor"
 
