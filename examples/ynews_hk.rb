@@ -16,3 +16,4 @@ puts result
 File.open("yahoo.rss", "w") do |file|
   file.write(result)
 end
+
