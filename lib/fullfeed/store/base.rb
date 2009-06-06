@@ -1,6 +1,6 @@
 module Fullfeed
-  module FeedCache
-    class BaseCache
+  module Store
+    class BaseStore
       def initialize(cache_size)
       end
 

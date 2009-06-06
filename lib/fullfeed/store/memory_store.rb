@@ -1,9 +1,9 @@
 require 'cache'
 
 module Fullfeed
-  module FeedCache
+  module Store
     #Cache in memory, based on Ruby Cache gem
-    class MemoryCache < BaseCache
+    class MemoryStore < BaseStore
       def initialize(cache_size)
         @cache = Cache.new({:max_num => cache_size})
       end
