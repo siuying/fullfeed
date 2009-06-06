@@ -82,6 +82,7 @@ module Fullfeed
 
       begin
         unless extractor.nil?
+          @logger.debug "  Download link: #{link}"
           doc = @agent.get(link)
           return extractor.extract(doc)
         else
