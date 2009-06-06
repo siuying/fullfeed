@@ -1,10 +1,10 @@
 require "#{File.dirname(__FILE__)}/agent"
 require "#{File.dirname(__FILE__)}/extractor"
-require "#{File.dirname(__FILE__)}/feed_cache"
+require "#{File.dirname(__FILE__)}/store"
 
 module Fullfeed
   class Feed  
-    attr_reader :url, :encoding, :xml, :item_limit, :cache
+    attr_reader :url, :encoding, :xml, :item_limit, :store
     attr_accessor :logger
 
     def initialize(url, options = {})
@@ -13,13 +13,13 @@ module Fullfeed
       @wait           = options[:wait]      || 1
       @item_limit     = options[:limit]     || 50
       @agent_name     = options[:agent]     || :open_uri
-      @cache_name     = options[:cache]     || :memory
+      @store_name     = options[:store]     || :memory
 
       validate_params
 
       @logger = Logger.new(STDOUT)
       @agent  = Fullfeed::Agent::AgentFactory.agent(@agent_name)
-      @cache  = Fullfeed::FeedCache::CacheFactory.cache(@item_limit, @cache_name)
+      @store  = Fullfeed::Store::StoreFactory.store(@item_limit, @store_name)
     end
 
 
@@ -72,7 +72,7 @@ module Fullfeed
 
     # read cache or fetch result
     def extract_cached(guid, link)
-      @cache[guid] ||= extract(link)   
+      @store[guid] ||= extract(link)
     end
 
     #Use ExtractorFactor to find a suitable Extractor, if found, extract supplied link to the URL.

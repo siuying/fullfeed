@@ -1,6 +1,6 @@
 NAME = "fullfeed"
 SUMMARY = "Fullfeed RSS creator"
-GEM_VERSION = "0.1.4"
+GEM_VERSION = "0.1.5"
 
 Gem::Specification.new do |s|
   s.name = NAME
