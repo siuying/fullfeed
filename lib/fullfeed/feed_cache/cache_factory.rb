@@ -10,7 +10,7 @@ module Fullfeed
         cache_class = CACHE_MAP[name]
         
         if cache_class
-          if cache_size || cache_size <= 0
+          if !cache_size || cache_size <= 0
             raise ArgumentError, "invalid cache size: #{cache_size}"
           end
 
