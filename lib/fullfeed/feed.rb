@@ -2,6 +2,7 @@ require 'mechanize'
 require 'cache'
 
 require "#{File.dirname(__FILE__)}/agent"
+require "#{File.dirname(__FILE__)}/extractor"
 
 module Fullfeed
   class Feed  
