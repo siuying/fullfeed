@@ -1,7 +1,8 @@
 module Fullfeed
   module Extractor
     class YahooNewsHongKongExtractor < XpathExtractor
-      register_extractor
+      # register this extractor to the system
+      register
 
       def initialize
         super(%r{http://hk\.rd\.yahoo.com/news/rss/\*http://.+\.html}, ".livewords")

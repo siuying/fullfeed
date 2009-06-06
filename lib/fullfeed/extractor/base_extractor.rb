@@ -29,7 +29,7 @@ module Fullfeed
         nil
       end
 
-      def self.register_extractor
+      def self.register
         ExtractorFactory.instance.register(self)
       end
     end
