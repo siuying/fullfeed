@@ -16,7 +16,8 @@ module Fullfeed
             return agent
           end
         end
-        return nil
+
+        raise ArgumentError, "unknown agent name :#{name}"
       end
     end
   end
