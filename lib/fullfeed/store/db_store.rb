@@ -18,11 +18,13 @@ module Fullfeed
         item = Item.first_or_new(:feed_url => @url, :guid => key)
         item.content = value
         item.save
+        value
       end
 
       #Retrieve an item by key
       def [](key)
         item = Item.first(:feed_url => @url, :guid => key)
+        item.content
       end
 
     end
