@@ -2,7 +2,7 @@ require 'mechanize'
 require 'cache'
 
 module Fullfeed
-  class Fullfeed  
+  class Feed  
     attr_reader :url, :encoding, :xml, :item_limit, :cache
     attr_accessor :logger
 
@@ -49,9 +49,6 @@ module Fullfeed
       end
       if @item_limit <= 0
         raise ArgumentError, "invalid limit `#{@item_limit}'"
-      end
-      if @cache_items <= 0
-        raise ArgumentError, "invalid cache_items `#{@cache_items}'"
       end
     end
 
