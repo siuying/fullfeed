@@ -36,9 +36,6 @@ module Fullfeed
       @logger.info "Process elements of RSS (count=#{items.size}, limit=#{@item_limit})"
       items.to_a.first(@item_limit).each do |item|
         process_item(item)
-
-        @logger.debug "  Wait #{@wait} seconds before next URL"
-        sleep(@wait) if @wait > 0
       end
 
       @xml
@@ -83,11 +80,18 @@ module Fullfeed
     def extract(link)
       extractor = Extractor::ExtractorFactory.instance.extractor(link)
 
-      unless extractor.nil?
-        doc = @agent.get(link)
-        extractor.extract(doc)
-      else
-        nil
+      begin
+        unless extractor.nil?
+          doc = @agent.get(link)
+          return extractor.extract(doc)
+        else
+          return nil
+        end
+
+      ensure
+        @logger.debug "  Wait #{@wait} seconds before next URL"
+        sleep(@wait) if @wait > 0
+
       end
     end
   end
