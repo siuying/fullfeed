@@ -1,6 +1,8 @@
 require 'mechanize'
 require 'cache'
 
+require "#{File.dirname(__FILE__)}/agent"
+
 module Fullfeed
   class Feed  
     attr_reader :url, :encoding, :xml, :item_limit, :cache
@@ -15,8 +17,7 @@ module Fullfeed
       validate_params
 
       @logger         = Logger.new(STDOUT)
-      @agent          = WWW::Mechanize.new
-      @agent.user_agent_alias = "Mac FireFox"      
+      @agent          = Fullfeed::Agent::AgentFactory.agent     
       @cache          = Cache.new({:max_num => @item_limit})
     end
 
@@ -28,7 +29,7 @@ module Fullfeed
     def fetch
       @logger.info "Fetch RSS URL: #{@url}"
       doc = @agent.get(@url)
-      @xml = Nokogiri::XML(doc.content, nil, @encoding)
+      @xml = Nokogiri::XML(doc, nil, @encoding)
       items = (@xml/"//item")
 
       @logger.info "Process elements of RSS (count=#{items.size}, limit=#{@item_limit})"
@@ -83,7 +84,7 @@ module Fullfeed
 
       unless extractor.nil?
         doc = @agent.get(link)
-        extractor.extract(doc.content)
+        extractor.extract(doc)
       else
         nil
       end
