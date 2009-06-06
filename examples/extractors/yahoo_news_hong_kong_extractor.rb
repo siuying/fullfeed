@@ -1,6 +1,6 @@
 module Fullfeed
   module Extractor
-    class YahooNewsHongKongExtractor < BaseExtractor
+    class YahooNewsHongKongExtractor < XpathExtractor
       register_extractor
 
       ACCEPT_URLS_PATTERN = [
@@ -8,14 +8,8 @@ module Fullfeed
               /^http:\/\/hk\.news\.yahoo\.com\/article\/.+\.html$/
       ]
 
-      def accept(url)
-        is_matched?(url, ACCEPT_URLS_PATTERN)
-      end
-
-      # return content of Yahoo News HK page
-      def extract(doc)
-        hdoc = Hpricot(doc)        
-        text = (hdoc/".livewords").inner_html rescue nil
+      def initialize
+        super(ACCEPT_URLS_PATTERN, ".livewords")
       end
     end
   end

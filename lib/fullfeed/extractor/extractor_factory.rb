@@ -9,11 +9,8 @@ module Fullfeed
         @extractors = []
       end
 
-      def register(extractor)
-        if !extractor.is_a?(BaseExtractor) || extractor.class == BaseExtractor
-          raise "must be subclass of BaseExtractor"
-        end
-        @extractors << extractor
+      def register(extractor_class)
+        @extractors << extractor_class
       end
 
       def unregister(extractor)
@@ -21,8 +18,8 @@ module Fullfeed
       end
 
       def extractor(url)
-        extractors = @extractors.select() {|e| e.accept(url) }
-        return extractors.first if extractors.size > 0
+        extractors = @extractors.select() {|e| e.instance.accept(url) }
+        return extractors.first.instance if extractors.size > 0
         
         # if no extractors accept the above URL, use default TextExtractor
         default = TextExtractor.instance

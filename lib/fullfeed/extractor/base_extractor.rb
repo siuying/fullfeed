@@ -30,7 +30,7 @@ module Fullfeed
       end
 
       def self.register_extractor
-        ExtractorFactory.instance.register(self.instance)
+        ExtractorFactory.instance.register(self)
       end
     end
   end
