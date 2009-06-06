@@ -12,13 +12,14 @@ module Fullfeed
       @encoding       = options[:encoding]  || nil
       @wait           = options[:wait]      || 1
       @item_limit     = options[:limit]     || 50
+      @agent_name     = options[:agent]     || :open_uri
+      @cache_name     = options[:cache]     || :memory
 
       validate_params
 
-      @logger         = Logger.new(STDOUT)
-      @agent          = Fullfeed::Agent::AgentFactory.agent     
-      #@cache          = Cache.new({:max_num => @item_limit})
-      @cache = Fullfeed::FeedCache::MemoryCache.new(@item_limit)
+      @logger = Logger.new(STDOUT)
+      @agent  = Fullfeed::Agent::AgentFactory.agent(@agent_name)
+      @cache  = Fullfeed::FeedCache::CacheFactory.cache(@item_limit, @cache_name)
     end
 
 

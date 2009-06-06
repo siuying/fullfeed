@@ -1,8 +1,7 @@
 module Fullfeed
   module FeedCache
     class BaseCache
-      def initialize()
-        
+      def initialize(cache_size)
       end
 
       def []=(args)
