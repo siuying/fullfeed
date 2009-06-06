@@ -1,8 +1,9 @@
 require 'mechanize'
+require 'cache'
 
 module Fullfeed
   class Fullfeed  
-    attr_reader :url, :encoding, :xml, :item_limit
+    attr_reader :url, :encoding, :xml, :item_limit, :cache
     attr_accessor :logger
 
     def initialize(url, options = {})
@@ -10,11 +11,15 @@ module Fullfeed
       @encoding       = options[:encoding]  || nil
       @wait           = options[:wait]      || 1
       @item_limit     = options[:limit]     || 50
-      @logger         = Logger.new(STDOUT)
 
+      validate_params
+
+      @logger         = Logger.new(STDOUT)
       @agent          = WWW::Mechanize.new
-      @agent.user_agent_alias = "Mac FireFox"
+      @agent.user_agent_alias = "Mac FireFox"      
+      @cache          = Cache.new({:max_num => @item_limit})
     end
+
 
     #Fetch the RSS feed.
     #
@@ -23,7 +28,6 @@ module Fullfeed
     def fetch
       @logger.info "Fetch RSS URL: #{@url}"
       doc = @agent.get(@url)
-
       @xml = Nokogiri::XML(doc.content, nil, @encoding)
       items = (@xml/"//item")
 
@@ -38,7 +42,19 @@ module Fullfeed
       @xml
     end
 
-    private    
+    private
+    def validate_params
+      if @wait <= 0
+        raise ArgumentError, "invalid wait `#{@wait}'"
+      end
+      if @item_limit <= 0
+        raise ArgumentError, "invalid limit `#{@item_limit}'"
+      end
+      if @cache_items <= 0
+        raise ArgumentError, "invalid cache_items `#{@cache_items}'"
+      end
+    end
+
     def process_item(item)
       link = (item/"link").first.inner_text   rescue nil
       desc = (item/"description").first       rescue nil
@@ -48,7 +64,7 @@ module Fullfeed
         begin 
           @logger.debug "  Extract item (#{guid}) link: #{link}"
           desc.content = extract_cached(guid, link)
-        rescue Exception => e
+        rescue StandardError => e
           @logger.error "Error fetching content: #{e.inspect}"
         end
 
@@ -57,12 +73,12 @@ module Fullfeed
 
       end
     end
-    
+
+    # read cache or fetch result
     def extract_cached(guid, link)
-      # read cache or fetch result      
-      text = extract(link) 
+      @cache[guid] ||= extract(link)   
     end
-    
+
     #Use ExtractorFactor to find a suitable Extractor, if found, extract supplied link to the URL.
     #If not found, use TextExtractor which extract all text from the page.
     def extract(link)
