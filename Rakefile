@@ -8,7 +8,7 @@ require "rake/gempackagetask"
 
 NAME = "fullfeed"
 SUMMARY = "Fullfeed RSS creator"
-GEM_VERSION = "0.1.5"
+GEM_VERSION = "0.1.6"
 
 spec = Gem::Specification.new do |s|
   s.name = NAME
