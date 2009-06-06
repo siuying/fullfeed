@@ -1,8 +1,6 @@
-require 'mechanize'
-require 'cache'
-
 require "#{File.dirname(__FILE__)}/agent"
 require "#{File.dirname(__FILE__)}/extractor"
+require "#{File.dirname(__FILE__)}/feed_cache"
 
 module Fullfeed
   class Feed  
@@ -19,7 +17,8 @@ module Fullfeed
 
       @logger         = Logger.new(STDOUT)
       @agent          = Fullfeed::Agent::AgentFactory.agent     
-      @cache          = Cache.new({:max_num => @item_limit})
+      #@cache          = Cache.new({:max_num => @item_limit})
+      @cache = Fullfeed::FeedCache::MemoryCache.new(@item_limit)
     end
 
 
