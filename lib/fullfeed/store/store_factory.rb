@@ -1,12 +1,12 @@
 module Fullfeed
   module Store
-    STORES = { :memory => MemoryStore }
+    STORES = { :memory => MemoryStore, :db => DmStore }
 
     class StoreFactory
       # get class extends BaseCache from a symbol
       # Accetable name:
       #  # :memory - store result in memory
-      def self.store(cache_size, name = :memory)
+      def self.store(url, cache_size, name = :memory)
         store_class = STORES[name]
         
         if store_class
@@ -14,7 +14,7 @@ module Fullfeed
             raise ArgumentError, "invalid store size: #{cache_size}"
           end
 
-          store = store_class.new(cache_size)
+          store = store_class.new(url, cache_size)
           if store.is_a?(BaseStore)
             return store
           end

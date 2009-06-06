@@ -19,7 +19,7 @@ module Fullfeed
 
       @logger = Logger.new(STDOUT)
       @agent  = Fullfeed::Agent::AgentFactory.agent(@agent_name)
-      @store  = Fullfeed::Store::StoreFactory.store(@item_limit, @store_name)
+      @store  = Fullfeed::Store::StoreFactory.store(@url, @item_limit, @store_name)
     end
 
 

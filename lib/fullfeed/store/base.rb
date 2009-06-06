@@ -1,7 +1,7 @@
 module Fullfeed
   module Store
     class BaseStore
-      def initialize(cache_size)
+      def initialize(url, cache_size)
       end
 
       def []=(args)
