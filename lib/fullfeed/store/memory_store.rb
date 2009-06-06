@@ -1,3 +1,6 @@
+require 'rubygems'
+gem('ruby-cache', '>= 0.3.0')
+
 require 'cache'
 
 module Fullfeed

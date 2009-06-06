@@ -1,3 +1,6 @@
+require 'rubygems'
+gem('datamapper', '>=0.9.7')
+
 require 'dm-core'
 require 'dm-timestamps'
 

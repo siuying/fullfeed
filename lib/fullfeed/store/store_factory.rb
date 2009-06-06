@@ -1,13 +1,20 @@
 module Fullfeed
   module Store
-    STORES = { :memory => MemoryStore, :db => DbStore }
-
     class StoreFactory
+      @@stores = { :memory => MemoryStore }
+
+      # only load DbStore if datamapper is installed
+      begin
+        gem('datamapper', '>= 0.9.7')
+        @@stores[:db] = DbStore
+      rescue
+      end
+
       # get class extends BaseCache from a symbol
       # Accetable name:
       #  # :memory - store result in memory
       def self.store(url, cache_size, name = :memory)
-        store_class = STORES[name]
+        store_class = @@stores[name]
         
         if store_class
           if !cache_size || cache_size <= 0

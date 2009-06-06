@@ -8,7 +8,8 @@ h2. Dependency
 
 Fullfeed requires following gems:
 
- * cache
- * nokogiri
- * hpricot
+ * cache (0.3.0+)
+ * nokogiri (1.2.0+)
+ * hpricot (0.6.1+)
  * mechanize (optional)
+ * datamapper (optional)
