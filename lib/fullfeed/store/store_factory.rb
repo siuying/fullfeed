@@ -1,6 +1,6 @@
 module Fullfeed
   module Store
-    STORES = { :memory => MemoryStore, :db => DmStore }
+    STORES = { :memory => MemoryStore, :db => DbStore }
 
     class StoreFactory
       # get class extends BaseCache from a symbol

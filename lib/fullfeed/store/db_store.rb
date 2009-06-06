@@ -3,7 +3,7 @@ require 'dm-timestamps'
 
 module Fullfeed
   module Store
-    class DmStore < BaseStore
+    class DbStore < BaseStore
       def self.setup(url)
         DataMapper.setup(:default, url)
       end

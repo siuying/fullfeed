@@ -11,7 +11,7 @@ require "#{File.dirname(__FILE__)}/../lib/fullfeed"
 require "#{File.dirname(__FILE__)}/extractors/yahoo_news_hong_kong_extractor"
 
 # setup datamaper
-Fullfeed::Store::DmStore.setup("sqlite3:ynews.sqlite3")
+Fullfeed::Store::DbStore.setup("sqlite3:ynews.sqlite3")
 
 # Migrate database, use only once
 #DataMapper.auto_migrate!
