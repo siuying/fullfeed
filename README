@@ -3,3 +3,12 @@
 Create full text RSS feed from RSS.
 
 Hmm... more details later.
+
+h2. Dependency
+
+Fullfeed requires following gems:
+
+ * mechanize
+ * cache
+ * nokogiri
+ * hpricot
