@@ -9,7 +9,7 @@ module Fullfeed
       ]
 
       def accept(url)
-        matched_regexps(url, ACCEPT_URLS_PATTERN)
+        is_matched?(url, ACCEPT_URLS_PATTERN)
       end
 
       # return content of Yahoo News HK page

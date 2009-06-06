@@ -2,8 +2,10 @@ module Fullfeed
   module Extractor
     # extract all text from html. this is being use if no other extractor is suitable
     class TextExtractor < BaseExtractor
+      PATTERN = [/^http\:.+$/, /^https\:.+$/]
+
       def accept(url)
-        url =~ /^http\:.+$/ || url =~ /^https\:.+$/ 
+        is_matched?(url, PATTERN)
       end
 
       # extract a html document, return the content text
