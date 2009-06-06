@@ -1,9 +1,6 @@
 require 'rubygems'
 gem('hpricot',    '>= 0.6.1')
-gem('nokogiri',   '>= 1.2.3')
-
 require 'hpricot'
-require 'nokogiri'
 
 require "#{File.dirname(__FILE__)}/agent"
 require "#{File.dirname(__FILE__)}/extractor"
@@ -37,7 +34,7 @@ module Fullfeed
     def fetch
       @logger.info "Fetch RSS URL: #{@url}"
       doc = @agent.get(@url)
-      @xml = Nokogiri::XML(doc, nil, @encoding)
+      @xml = Hpricot.XML(doc)
       items = (@xml/"//item")
 
       @logger.info "Process elements of RSS (count=#{items.size}, limit=#{@item_limit})"
@@ -64,12 +61,12 @@ module Fullfeed
       guid = (item/"guid").first.inner_text   rescue link
 
       if link && desc
-        begin 
+#        begin
           @logger.debug "  Extract item (#{guid}) link: #{link}"
-          desc.content = extract_cached(guid, link)
-        rescue StandardError => e
-          @logger.error "Error fetching content: #{e.inspect}"
-        end
+          desc.swap(extract_cached(guid, link))
+#        rescue StandardError => e
+#          @logger.error "Error fetching content: #{e.inspect}"
+#        end
 
       else
         @logger.warn "No link or desc node found in item: #{item}"
