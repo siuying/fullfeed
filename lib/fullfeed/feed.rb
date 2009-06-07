@@ -1,6 +1,7 @@
 require 'rubygems'
 gem('hpricot',    '>= 0.6.1')
 require 'hpricot'
+require 'iconv'
 
 require "#{File.dirname(__FILE__)}/agent"
 require "#{File.dirname(__FILE__)}/extractor"
