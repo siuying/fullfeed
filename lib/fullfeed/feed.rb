@@ -34,7 +34,7 @@ module Fullfeed
     #Extraction is based on registered Extractor, check the extractor classes for more information.
     def fetch
       @logger.info "Fetch RSS URL: #{@url}"
-      doc = @agent.get(@url)
+      doc = @agent.get(@url).to_s
       doc = to_utf8(doc)
       @xml = Hpricot.XML(doc)
       items = (@xml/"//item")
@@ -90,7 +90,7 @@ module Fullfeed
       begin
         unless extractor.nil?
           @logger.debug "  Download link: #{link}"
-          doc = @agent.get(link)
+          doc = @agent.get(link).to_s
           doc = to_utf8(doc)
           return extractor.extract(doc)
         else
