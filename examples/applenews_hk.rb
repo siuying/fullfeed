@@ -2,7 +2,8 @@
 #
 # create full text RSS feed from Yahoo! News HK
 
-require "#{File.dirname(__FILE__)}/../lib/fullfeed"
+require "rubygems"
+require "fullfeed"
 require "#{File.dirname(__FILE__)}/extractors/apple_news_extractor"
 
 # convert encoding filer, convert feed and/or fulltext item to UTF-8
@@ -19,8 +20,3 @@ feed = Fullfeed::Feed.new("http://rss.appleactionews.com/rss.xml",
         :wait => 1)
 result = feed.fetch
 puts result
-
-File.open("apple.rss", "w") do |file|
-  file.write(result)
-end
-

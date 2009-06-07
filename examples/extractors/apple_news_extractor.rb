@@ -1,3 +1,5 @@
+require "fullfeed"
+
 module Fullfeed
   module Extractor
     class AppleNewsExtractor < XpathExtractor

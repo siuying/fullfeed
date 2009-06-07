@@ -7,7 +7,9 @@
 # Uncomment the line under "Migrate database" when first run this app (it setup database)
 #
 
-require "#{File.dirname(__FILE__)}/../lib/fullfeed"
+require "rubygems"
+require "fullfeed"
+
 require "#{File.dirname(__FILE__)}/extractors/yahoo_news_hong_kong_extractor"
 
 # setup datamaper
