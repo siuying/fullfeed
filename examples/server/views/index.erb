@@ -1,0 +1,19 @@
+<html>
+    <head>
+      <title>Fullfeedr!</title> 
+      <link rel="stylesheet" href="http://www.w3.org/StyleSheets/Core/Modernist" type="text/css"/>
+    </head>
+    <body>
+        <h1>Welcome to Fullfeedr!</h1>
+        <p>We host following feed here: </p>
+        <ol>
+<% for item in @list %>
+          <li>
+            <a href="/<%= item['name'] %>">/<%= item['name'] %></a>            
+            (source: <a href="<%= item['url'] %>"><%= item['url'] %></a>)
+          </li>
+<% end %>
+        </ol>
+        <p>(Please wait while the fulltext feed is being downloaded)</p>
+    </body>
+</html>
