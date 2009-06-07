@@ -8,7 +8,7 @@ require "rake/gempackagetask"
 
 NAME = "fullfeed"
 SUMMARY = "Fullfeed RSS creator"
-GEM_VERSION = "0.4.4"
+GEM_VERSION = "0.4.5"
 
 spec = Gem::Specification.new do |s|
   s.name = NAME
@@ -18,8 +18,9 @@ spec = Gem::Specification.new do |s|
   s.version = GEM_VERSION
   s.platform = Gem::Platform::RUBY
   s.require_path = 'lib'
-  s.files = %w(Rakefile) + Dir.glob("lib/**/*") + Dir.glob("examples/**/*")
-
+  s.files       = FileList["[A-Z]*", "{bin,lib,examples,test}/**/*"]
+  
+  #   s.executables = ["rackup"]
   s.add_dependency('ruby-cache', '>= 0.3.0')
   s.add_dependency('hpricot',    '>= 0.6.1')
 end
