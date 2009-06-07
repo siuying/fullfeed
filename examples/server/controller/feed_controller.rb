@@ -1,8 +1,13 @@
 module Fullfeedr
   class FeedController
     CONF = [
-            {'name' => "appleactionnews", 'url' => "http://rss.appleactionews.com/rss.xml", 'filters' => [Fullfeed::Filters::ConvertEncodingFilter.new("UTF-8", "Big5"), Fullfeed::Filters::ExcessSpaceFilter.new]},
-            {'name' => "ynews-hk",        'url' => "http://hk.news.yahoo.com/rss/hongkong/rss.xml"}
+            {
+                    'name' => "appleactionnews",
+                    'url' => "http://rss.appleactionews.com/rss.xml",
+                    'filters' => [Fullfeed::Filters::ConvertEncodingFilter.new("UTF-8", "Big5"), Fullfeed::Filters::ExcessSpaceFilter.new]},
+            {
+                    'name' => "ynews-hk",
+                    'url' => "http://hk.news.yahoo.com/rss/hongkong/rss.xml"}
     ].freeze
 
     def initialize
