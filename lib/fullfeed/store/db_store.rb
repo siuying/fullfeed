@@ -9,8 +9,13 @@ module Fullfeed
     class DbStore < BaseStore
       register
       
-      def self.setup(url)
+      def self.setup(url, automigrate = false)
         DataMapper.setup(:default, url)
+        begin
+          Item.first
+        rescue
+          DataMapper.auto_migrate!
+        end
       end
 
       #Initialize a datamapper store
