@@ -65,11 +65,12 @@ module Fullfeed
       if link && desc
         begin
           @logger.debug "  Extract item (#{guid}) link: #{link}"
-          desc.inner_html = extract_cached(guid, link)
-        rescue StandardError => e
-          @logger.error "Error fetching content: #{e.inspect}"
-        end
+          desc.children.first.content = extract_cached(guid, link)
 
+        rescue StandardError => e
+          @logger.error "Error fetching/replacing content: #{e.inspect}"
+
+        end        
       else
         @logger.warn "No link or desc node found in item: #{item}"
 
@@ -105,9 +106,9 @@ module Fullfeed
 
     def to_utf8(text)
       if @encoding == "UTF-8"
-        text
+        return text
       else
-        Iconv.conv("UTF-8", @encoding, text)
+        return Iconv.conv("UTF-8", @encoding, text)
       end
     end
   end

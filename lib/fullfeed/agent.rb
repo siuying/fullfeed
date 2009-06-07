@@ -16,4 +16,5 @@ begin
   gem('appengine-apis')
   require "#{File.dirname(__FILE__)}/agent/appengine_agent"
 rescue Gem::LoadError
+rescue NameError 
 end
