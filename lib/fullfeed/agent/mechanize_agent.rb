@@ -5,6 +5,8 @@ module Fullfeed
     #Use Mechanize as the agent
     #Support cookies ... etc
     class MechanizeAgent < BaseAgent
+      register
+
       def initialize
         @agent = WWW::Mechanize.new
         @agent.user_agent_alias = "Mac FireFox"   
