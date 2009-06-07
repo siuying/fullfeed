@@ -1,11 +1,10 @@
 require 'rubygems'
 gem('hpricot',    '>= 0.6.1')
 require 'hpricot'
-require 'iconv'
-
 require "#{File.dirname(__FILE__)}/agent"
 require "#{File.dirname(__FILE__)}/extractor"
 require "#{File.dirname(__FILE__)}/store"
+require "#{File.dirname(__FILE__)}/filters"
 
 module Fullfeed
   class Feed  
@@ -14,17 +13,18 @@ module Fullfeed
 
     def initialize(url, options = {})
       @url            = url
-      @encoding       = options[:encoding]  || "UTF-8" 
       @wait           = options[:wait]      || 1
       @item_limit     = options[:limit]     || 50
       @agent_name     = options[:agent]     || :open_uri
       @store_name     = options[:store]     || :memory
 
+
       validate_params
 
-      @logger = Logger.new(STDOUT)
-      @agent  = Fullfeed::Agent::AgentFactory.agent(@agent_name)
-      @store  = Fullfeed::Store::StoreFactory.store(@url, @item_limit, @store_name)
+      @filters  = Fullfeed::Filters::FilterChain.new(options[:filters] || [])
+      @logger   = Logger.new(STDOUT)
+      @agent    = Fullfeed::Agent::AgentFactory.agent(@agent_name)
+      @store    = Fullfeed::Store::StoreFactory.store(@url, @item_limit, @store_name)
     end
 
 
@@ -35,7 +35,7 @@ module Fullfeed
     def fetch
       @logger.info "Fetch RSS URL: #{@url}"
       doc = @agent.get(@url).to_s
-      doc = to_utf8(doc)
+      doc = @filters.before_doc(doc)
       @xml = Hpricot.XML(doc)
       items = (@xml/"//item")
 
@@ -44,7 +44,7 @@ module Fullfeed
         process_item(item)
       end
 
-      @xml
+      @filters.after_doc(@xml)
     end
 
     private
@@ -82,6 +82,7 @@ module Fullfeed
       @store[guid] ||= extract(link)
     end
 
+
     #Use ExtractorFactor to find a suitable Extractor, if found, extract supplied link to the URL.
     #If not found, use TextExtractor which extract all text from the page.
     def extract(link)
@@ -91,8 +92,10 @@ module Fullfeed
         unless extractor.nil?
           @logger.debug "  Download link: #{link}"
           doc = @agent.get(link).to_s
-          doc = to_utf8(doc)
-          return extractor.extract(doc)
+          doc = @filters.before_item(doc)
+          doc = extractor.extract(doc)
+          doc = @filters.after_item(doc)
+          return doc
         else
           return nil
         end
@@ -101,14 +104,6 @@ module Fullfeed
         @logger.debug "  Wait #{@wait} seconds before next URL"
         sleep(@wait) if @wait > 0
 
-      end
-    end
-
-    def to_utf8(text)
-      if @encoding == "UTF-8"
-        return text
-      else
-        return Iconv.conv("UTF-8", @encoding, text)
       end
     end
   end
