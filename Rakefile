@@ -18,7 +18,7 @@ spec = Gem::Specification.new do |s|
   s.version       = GEM_VERSION
   s.platform      = Gem::Platform::RUBY
   s.require_path  = 'lib'
-  s.files         = FileList["[A-Z]*", "{lib,examples,test}/**/*"]
+  s.files         =  %w(README Rakefile) + Dir.glob("{examples,lib,test}/**/*")
   
   #   s.executables = ["rackup"]
   s.add_dependency('ruby-cache', '>= 0.3.0')
