@@ -30,8 +30,7 @@ require "fullfeed/extractor/xpath_extractor"
 require "fullfeed/filters/base_filter"
 require "fullfeed/filters/convert_encoding_filter"
 require "fullfeed/filters/uppercase_filter"
-require "fullfeed/filters/uppercase_filter"
-
+require "fullfeed/filters/excess_space_filter"
 
 require "fullfeed/store/base"
 require "fullfeed/store/store_factory"
