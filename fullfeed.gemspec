@@ -1,6 +1,3 @@
-require 'rake'
-require 'rake/gempackagetask'
-
 NAME = "fullfeed"
 SUMMARY = "Fullfeed RSS creator"
 GEM_VERSION = "0.4.6"
