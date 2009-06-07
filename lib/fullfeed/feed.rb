@@ -65,8 +65,7 @@ module Fullfeed
       if link && desc
         begin
           @logger.debug "  Extract item (#{guid}) link: #{link}"
-          desc.children.first.content = extract_cached(guid, link)
-
+          desc.swap("<description>#{Hpricot::Tag::CData.new(extract_cached(guid, link)).to_html}</description>")
         rescue StandardError => e
           @logger.error "Error fetching/replacing content: #{e.inspect}"
 
@@ -93,7 +92,7 @@ module Fullfeed
           @logger.debug "  Download link: #{link}"
           doc = @agent.get(link).to_s
           doc = @filters.before_item(doc)
-          doc = extractor.extract(doc)
+          doc = extractor.extract(doc).strip
           doc = @filters.after_item(doc)
           return doc
         else
