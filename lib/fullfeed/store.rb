@@ -1,4 +1,5 @@
 require "#{File.dirname(__FILE__)}/store/base"
+require "#{File.dirname(__FILE__)}/store/store_factory"
 require "#{File.dirname(__FILE__)}/store/memory_store"
 
 # only load DbStore if datamapper is installed
@@ -8,4 +9,3 @@ begin
 rescue Gem::LoadError
 end
 
-require "#{File.dirname(__FILE__)}/store/store_factory"

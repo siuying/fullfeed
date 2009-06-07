@@ -7,6 +7,8 @@ module Fullfeed
   module Store
     #Cache in memory, based on Ruby Cache gem
     class MemoryStore < BaseStore
+      register
+      
       def initialize(url, cache_size)
         @cache = Cache.new({:max_num => cache_size})
       end

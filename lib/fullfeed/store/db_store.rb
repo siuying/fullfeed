@@ -7,6 +7,8 @@ require 'dm-timestamps'
 module Fullfeed
   module Store
     class DbStore < BaseStore
+      register
+      
       def self.setup(url)
         DataMapper.setup(:default, url)
       end
@@ -26,9 +28,8 @@ module Fullfeed
 
       #Retrieve an item by key
       def [](key)
-        item = Item.first(:feed_url => @url, :guid => key)
-        return item.content if item
-        return nil
+        item = Item.first(:feed_url => @url, :guid => key)       
+        item.content rescue nil
       end
 
     end
