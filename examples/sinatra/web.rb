@@ -8,11 +8,16 @@ require 'sinatra'
 require "#{File.dirname(__FILE__)}/../../lib/fullfeed"
 require "#{File.dirname(__FILE__)}/../extractors/yahoo_news_hong_kong_extractor"
 
+Fullfeed::Store::DbStore.setup("sqlite3:ynews.sqlite3")
+
+#DataMapper.auto_migrate!
+
 # Create Yahoo! News HK full-text feed
 feed = Fullfeed::Feed.new("http://hk.news.yahoo.com/rss/hongkong/rss.xml",
         :limit => 20,
         :wait => 1,
-        :agent => :open_uri)
+        :agent => :open_uri,
+        :store => :db)
 
 # pre fetch the request
 feed.logger.info "Pre-Fetching RSS, could take some time ..."
