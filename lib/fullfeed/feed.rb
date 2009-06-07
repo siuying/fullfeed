@@ -13,7 +13,7 @@ module Fullfeed
 
     def initialize(url, options = {})
       @url            = url
-      @encoding       = options[:encoding]  || nil
+      @encoding       = options[:encoding]  || "UTF-8" 
       @wait           = options[:wait]      || 1
       @item_limit     = options[:limit]     || 50
       @agent_name     = options[:agent]     || :open_uri
@@ -34,6 +34,7 @@ module Fullfeed
     def fetch
       @logger.info "Fetch RSS URL: #{@url}"
       doc = @agent.get(@url)
+      doc = to_utf8(doc)
       @xml = Hpricot.XML(doc)
       items = (@xml/"//item")
 
@@ -61,12 +62,12 @@ module Fullfeed
       guid = (item/"guid").first.inner_text   rescue link
 
       if link && desc
-#        begin
+        begin
           @logger.debug "  Extract item (#{guid}) link: #{link}"
-          desc.swap(extract_cached(guid, link))
-#        rescue StandardError => e
-#          @logger.error "Error fetching content: #{e.inspect}"
-#        end
+          desc.inner_html = extract_cached(guid, link)
+        rescue StandardError => e
+          @logger.error "Error fetching content: #{e.inspect}"
+        end
 
       else
         @logger.warn "No link or desc node found in item: #{item}"
@@ -88,6 +89,7 @@ module Fullfeed
         unless extractor.nil?
           @logger.debug "  Download link: #{link}"
           doc = @agent.get(link)
+          doc = to_utf8(doc)
           return extractor.extract(doc)
         else
           return nil
@@ -97,6 +99,14 @@ module Fullfeed
         @logger.debug "  Wait #{@wait} seconds before next URL"
         sleep(@wait) if @wait > 0
 
+      end
+    end
+
+    def to_utf8(text)
+      if @encoding == "UTF-8"
+        text
+      else
+        Iconv.conv("UTF-8", @encoding, text)
       end
     end
   end
