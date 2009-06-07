@@ -6,9 +6,18 @@ require 'load_files'
 
 class TestDbStore < Test::Unit::TestCase
   Fullfeed::Store::DbStore.setup("sqlite3:ynews.sqlite3")
-  
-  def test_store
+
+  def test_db_store
     store = Fullfeed::Store::StoreFactory.store('http://test', 100, :db)
+    base_test_store(store)
+  end
+
+  def test_memory_store
+    store = Fullfeed::Store::StoreFactory.store('http://test', 100, :memory)
+    base_test_store(store)
+  end
+  private
+  def base_test_store(store)
 
     value = rand().to_s
     store['/100'] = value
