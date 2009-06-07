@@ -1,10 +1,6 @@
 require 'rubygems'
 gem('hpricot',    '>= 0.6.1')
 require 'hpricot'
-require "#{File.dirname(__FILE__)}/agent"
-require "#{File.dirname(__FILE__)}/extractor"
-require "#{File.dirname(__FILE__)}/store"
-require "#{File.dirname(__FILE__)}/filters"
 
 module Fullfeed
   class Feed  

@@ -1,6 +1,6 @@
 NAME = "fullfeed"
 SUMMARY = "Fullfeed RSS creator"
-GEM_VERSION = "0.4.1"
+GEM_VERSION = "0.4.3"
 
 Gem::Specification.new do |s|
   s.name = NAME
@@ -14,5 +14,5 @@ Gem::Specification.new do |s|
 
   #   s.executables = ["rackup"]
   s.add_dependency('ruby-cache', '>= 0.3.0')
-  s.add_dependency('nokogiri',   '>= 1.2.3')
+  s.add_dependency('hpricot',    '>= 0.6.1')
 end
