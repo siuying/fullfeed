@@ -18,7 +18,7 @@ module Fullfeed
 
       #Save or update existing item by key
       def []=(key, value)
-        item = Item.first_or_new(:feed_url => @url, :guid => key)
+        item = Item.first_or_create(:feed_url => @url, :guid => key)
         item.content = value
         item.save
         value
@@ -27,7 +27,8 @@ module Fullfeed
       #Retrieve an item by key
       def [](key)
         item = Item.first(:feed_url => @url, :guid => key)
-        item.content
+        return item.content if item
+        return nil
       end
 
     end
