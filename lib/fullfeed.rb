@@ -1,6 +1,10 @@
 path = File.expand_path(File.dirname(__FILE__))
 $:.unshift(path) unless $:.include?(path)
 
+module FullFeed
+  VERSION = '0.4.7'
+end
+
 require 'logger'
 
 require "fullfeed/agent/base"

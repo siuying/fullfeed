@@ -1,35 +1,59 @@
-require "rubygems"
-require "pathname"
-require "rake"
-require "rake/testtask"
+require 'rake/clean'
+require 'rake/testtask'
+require 'fileutils'
 
-# Gem
 require "rake/gempackagetask"
 
-NAME = "fullfeed"
-SUMMARY = "Fullfeed RSS creator"
-GEM_VERSION = "0.4.6"
+task :default => :package
 
-spec = Gem::Specification.new do |s|
-  s.name          = NAME
-  s.summary       = s.description = SUMMARY
-  s.author        = "siuying"
-  s.email         = "siu.ying@gmail.com"
-  s.version       = GEM_VERSION
-  s.platform      = Gem::Platform::RUBY
-  s.require_path  = 'lib'
-  s.files         =  %w(README Rakefile) + Dir.glob("{examples,lib,test}/**/*")
-  
-  #   s.executables = ["rackup"]
-  s.add_dependency('ruby-cache', '>= 0.3.0')
-  s.add_dependency('hpricot',    '>= 0.6.1')
+# PACKAGING ============================================================
+
+# Load the gemspec using the same limitations as github
+def spec
+  @spec ||=
+    begin
+      require 'rubygems/specification'
+      data = File.read('fullfeed.gemspec')
+      spec = nil
+      Thread.new { spec = eval("$SAFE = 3\n#{data}") }.join
+      spec
+    end
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
   pkg.gem_spec = spec
 end
 
-desc "Install the FullFeed as a gem"
+desc "Install the Fullfeed as a gem"
 task :install => [:repackage] do
   sh %{gem install pkg/#{spec.name}-#{spec.version}}
+end
+
+# Gemspec Helpers ====================================================
+def source_version
+  line = File.read('lib/fullfeed.rb')[/^\s*VERSION = .*/]
+  line.match(/.*VERSION = '(.*)'/)[1]
+end
+
+task 'fullfeed.gemspec' => FileList['lib/**','bin/**','examples/**','Rakefile','LICENSE','README'] do |f|
+  # read spec file and split out manifest section
+  spec = File.read(f.name)
+  head, manifest, tail = spec.split("  # = MANIFEST =\n")
+  # replace version and date
+  head.sub!(/\.version = '.*'/, ".version = '#{source_version}'")
+  head.sub!(/\.date = '.*'/, ".date = '#{Date.today.to_s}'")
+  # determine file list from git ls-files
+  files = `git ls-files`.
+    split("\n").
+    sort.
+    reject{ |file| file =~ /^\./ }.
+    reject{ |file| file =~ /^.+\/\./ }.
+    reject { |file| file =~ /^doc/ }.
+    map{ |file| "    #{file}" }.
+    join("\n")
+  # piece file back together and write...
+  manifest = "  s.files = %w[\n#{files}\n  ]\n"
+  spec = [head,manifest,tail].join("  # = MANIFEST =\n")
+  File.open(f.name, 'w') { |io| io.write(spec) }
+  puts "updated #{f.name}"
 end
