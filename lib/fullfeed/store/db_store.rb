@@ -42,8 +42,8 @@ module Fullfeed
     class Item
       include DataMapper::Resource
       property  :id,        Serial
-      property  :feed_url,  String
-      property  :guid,      String
+      property  :feed_url,  String, :length => 256
+      property  :guid,      String, :length => 256
       property  :content,   Text
     end
   end
