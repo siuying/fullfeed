@@ -1,3 +1,5 @@
+require '../../lib/fullfeed/filters/translate_filter'
+
 module Fullfeedr
   class FeedController
     CONF = [
@@ -7,7 +9,13 @@ module Fullfeedr
                     'filters' => [Fullfeed::Filters::ConvertEncodingFilter.new("UTF-8", "Big5"), Fullfeed::Filters::ExcessSpaceFilter.new]},
             {
                     'name' => "ynews-hk",
-                    'url' => "http://hk.news.yahoo.com/rss/hongkong/rss.xml"}
+                    'url' => "http://hk.news.yahoo.com/rss/hongkong/rss.xml"
+            },
+            {
+                    'name' => "siuying's twitter",
+                    'url' => "http://twitter.com/statuses/user_timeline/2017551.rss",
+                    'filters' => Fullfeed::Filters::TranslateFilter.new
+            }
     ].freeze
 
     def initialize
@@ -18,11 +26,11 @@ module Fullfeedr
         filters = conf['filters'] || []
 
         @feeds[name] = Fullfeed::Feed.new(url,
-          :limit => 20,
+          :limit => 2,
           :wait => 1,
           :filters => filters,
           :agent => :open_uri,
-          :store => :db)
+          :store => :memory)
       end
     end
 

@@ -15,9 +15,6 @@ require "#{File.dirname(__FILE__)}/extractors/yahoo_news_hong_kong_extractor"
 # setup datamaper
 Fullfeed::Store::DbStore.setup("sqlite3:ynews.sqlite3")
 
-# Migrate database, use only once
-#DataMapper.auto_migrate!
-
 # create full text RSS feed from Yahoo! News HK
 # At most fetch 20 pages, wait 1 seconds before each try
 feed = Fullfeed::Feed.new("http://hk.news.yahoo.com/rss/hongkong/rss.xml",

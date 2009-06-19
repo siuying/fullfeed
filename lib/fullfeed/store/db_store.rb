@@ -44,7 +44,7 @@ module Fullfeed
       property  :id,        Serial
       property  :feed_url,  String
       property  :guid,      String
-      property  :content,   String
+      property  :content,   Text
     end
   end
 end

@@ -88,7 +88,7 @@ module Fullfeed
           @logger.debug "  Download link: #{link}"
           doc = @agent.get(link).to_s
           doc = @filters.before_item(doc)
-          doc = extractor.extract(doc).strip
+          doc = extractor.extract(doc)
           doc = @filters.after_item(doc)
           return doc
         else
