@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.author = "siuying"
   s.email = "siu.ying@gmail.com"
 
-  s.version = '0.4.7'
-  s.date = '2009-06-09'
+  s.version = '0.4.8'
+  s.date = '2009-06-19'
   s.platform = Gem::Platform::RUBY
   s.require_path = 'lib'
 
